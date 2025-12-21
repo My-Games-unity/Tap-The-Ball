@@ -1,47 +1,32 @@
-using JetBrains.Annotations;
-using TMPro;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
     public GameObject ballPrefab;
     GameObject Spawnedball;
-    Rigidbody2D Ballrb;
-    int randomnumber;
     public float Ballforce;
     int score = 0;
-    [SerializeField] private UIManager UIManager;
+    public UIManager UIManager;
+    public DifficultyManager difficultyManager;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Awake()
     {
         QualitySettings.vSyncCount = 0; // disable VSync
-        Application.targetFrameRate = 60;
+        Application.targetFrameRate = 100;
 
     }
 
     void Start()
     {
-        
-        SpawnBall();
+
+        difficultyManager.LevelOne();
     }
 
-    public void SpawnBall()
+    public GameObject SpawnBall()
     {
-        Spawnedball = Instantiate(ballPrefab, new Vector3(Random.Range(-1.3f, 1.3f), Random.Range(0f, 2.5f), 0), Quaternion.identity);
-        Ballrb= Spawnedball.GetComponent<Rigidbody2D>();
-        randomnumber = Random.Range(-2, 1);
-        Debug.Log(randomnumber);
-        if(randomnumber <= 0)
-        {
-            Ballrb.AddForce(new Vector2(-Ballforce,0), ForceMode2D.Impulse);
-        }
-        else if(randomnumber > 0) 
-        {
-            Ballrb.AddForce(new Vector2(Ballforce, 0), ForceMode2D.Impulse);
-            
-            
-        }
+        Spawnedball = Instantiate(ballPrefab, new Vector2(Random.Range(-1.3f, 1.3f), Random.Range(0f, 3f)), Quaternion.identity);
+        return Spawnedball;
         
     }
 
