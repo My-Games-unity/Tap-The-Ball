@@ -21,40 +21,45 @@ public class Bomb : MonoBehaviour
 
     IEnumerator BombDisappearRoutine()
     {
-        yield return new WaitForSeconds(3f);
-        LevelSelect();
-        Destroy(gameObject);
+        if (gameObject != null && gameObject.activeSelf)
+        {
+            yield return new WaitForSeconds(3f);
+            LevelSelect();
+            Destroy(gameObject);
+        }
     }
 
     private void LevelSelect()
     {
 
-        Score = PlayerPrefs.GetInt("Score", 0);
+        int BallSpawnChance = Random.Range(10, 100);
+
+        Score = gameManager.score;
         if (Score <= 10)
         {
 
             difficultyManager.LevelOne();
-
         }
 
         if (Score > 10 && Score <= 20)
         {
-
             difficultyManager.LevelTwo();
 
         }
 
-        if (Score > 20 && Score <= 35)
+        if (Score > 20 && Score <= 100)
         {
+
 
             difficultyManager.LevelThree();
 
+
         }
 
-        if (Score > 35 && Score <= 70)
+        if (Score > 100 && Score <= 200)
         {
-
             difficultyManager.LevelFour();
+
 
         }
 
@@ -64,6 +69,9 @@ public class Bomb : MonoBehaviour
     private void OnMouseDown()
     {
         gameManager.HealthSystem();
+        LevelSelect();
+        Destroy(gameObject);
+
     }
 
 }
