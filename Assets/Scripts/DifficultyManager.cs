@@ -9,9 +9,10 @@ public class DifficultyManager : MonoBehaviour
     private GameObject SpawnedBall;
     Rigidbody2D Ballrb;
     public float BallForce = 10f;
-    float CurrectScaleOfBall = 1.3f;
+    public float CurrectScaleOfBall = 1.3f;
     public GameObject _BombPreFab;
     public GameObject _2XBallPrefab;
+    public GameObject _HeartBall;
     [HideInInspector]
     public bool isBombSpawned = false;
     public int BombDelayTime;
@@ -21,6 +22,7 @@ public class DifficultyManager : MonoBehaviour
     {
         isBombSpawned=true;
         GameObject Bomb = Instantiate(_BombPreFab, new Vector2(UnityEngine.Random.Range(-1.3f, 1.3f), UnityEngine.Random.Range(0f, 3f)), Quaternion.identity);
+        Bomb.transform.localScale = Vector3.one *CurrectScaleOfBall;
         Rigidbody2D BombRB = Bomb.GetComponent<Rigidbody2D>();
         int randomnumber = UnityEngine.Random.Range(-2, 1);
 
@@ -36,7 +38,6 @@ public class DifficultyManager : MonoBehaviour
         }
 
         StartCoroutine(Bombelay(BombDelayTime));
-
     }
 
     IEnumerator Bombelay(int Delay)
@@ -51,7 +52,28 @@ public class DifficultyManager : MonoBehaviour
     public void TwoXBall()
     {
         GameObject TwoXBall = Instantiate(_2XBallPrefab, new Vector2(UnityEngine.Random.Range(-1.3f, 1.3f), UnityEngine.Random.Range(0f, 3f)), Quaternion.identity);
+        TwoXBall.transform.localScale = Vector3.one * CurrectScaleOfBall;
         Rigidbody2D BombRB = TwoXBall.GetComponent<Rigidbody2D>();
+        int randomnumber = UnityEngine.Random.Range(-2, 1);
+
+        //Debug.Log(randomnumber);
+        if (randomnumber <= 0)
+        {
+            BombRB.AddForce(new Vector2(-10, 0), ForceMode2D.Impulse);
+        }
+        else if (randomnumber > 0)
+        {
+            BombRB.AddForce(new Vector2(10, 0), ForceMode2D.Impulse);
+
+        }
+
+    }
+
+    public void HeartBall()
+    {
+        GameObject HeartBall = Instantiate(_HeartBall, new Vector2(UnityEngine.Random.Range(-1.3f, 1.3f), UnityEngine.Random.Range(0f, 3f)), Quaternion.identity);
+        HeartBall.transform.localScale = Vector3.one * CurrectScaleOfBall;
+        Rigidbody2D BombRB = HeartBall.GetComponent<Rigidbody2D>();
         int randomnumber = UnityEngine.Random.Range(-2, 1);
 
         //Debug.Log(randomnumber);
@@ -103,14 +125,14 @@ public class DifficultyManager : MonoBehaviour
         }
     }
     
-    public void LevelThree()
+    public void LevelThree() //Ball Speed increase
     {
         CurrectScaleOfBall = CurrectScaleOfBall - 0.03f;
-        float BallNewSize = Mathf.Max(CurrectScaleOfBall, 1f);
-        BallForce += 0.5f;
+        CurrectScaleOfBall = Mathf.Max(CurrectScaleOfBall, 1f);
+        BallForce += 0.3f;
         BallForce = Mathf.Clamp(BallForce, 10f, 18f);
         SpawnedBall = gameManager.SpawnBall();
-        SpawnedBall.transform.localScale = Vector2.one * BallNewSize;
+        SpawnedBall.transform.localScale = Vector3.one * CurrectScaleOfBall;
         Ballrb = SpawnedBall.GetComponent<Rigidbody2D>();
 
         if (gameManager.isBonusScoreActive)
@@ -138,15 +160,15 @@ public class DifficultyManager : MonoBehaviour
 
     public void LevelFour()
     {
-        CurrectScaleOfBall = CurrectScaleOfBall - 0.03f;
-        float BallNewSize = Mathf.Max(CurrectScaleOfBall, 1f);
-        BallForce += 0.5f;
-        BallForce = Mathf.Clamp(BallForce, 10f, 25f);
-
+            BallForce += 0.3f;
+            BallForce = Mathf.Clamp(BallForce, 10f, 18f);
+            CurrectScaleOfBall = CurrectScaleOfBall - 0.03f;
+            CurrectScaleOfBall = Mathf.Max(CurrectScaleOfBall, 0.7f);
             SpawnedBall = gameManager.SpawnBall();
-            SpawnedBall.transform.localScale = Vector2.one * BallNewSize;
+            SpawnedBall.transform.localScale = Vector3.one * CurrectScaleOfBall;
             Ballrb = SpawnedBall.GetComponent<Rigidbody2D>();
-
+            Ballrb.mass = 3;
+            Ballrb.linearDamping = 0.5f;
             if (gameManager.isBonusScoreActive)
             {
                 Ballrb.bodyType = RigidbodyType2D.Kinematic;
@@ -168,14 +190,7 @@ public class DifficultyManager : MonoBehaviour
                 }
             }
 
-        
-
-
-
     }
-
-
-
     #endregion
 
 

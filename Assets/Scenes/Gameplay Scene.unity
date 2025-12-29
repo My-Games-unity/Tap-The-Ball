@@ -199,6 +199,7 @@ MonoBehaviour:
   score: 0
   UIManager: {fileID: 641131308}
   difficultyManager: {fileID: 1997450665}
+  Health: 5
   ScoreMultiplyerDelay: 5
   isBonusScoreActive: 0
   CoinPreFab: {fileID: 592964705288582173, guid: 62cf75c8d32a6ed46ba21f13aa720d3e, type: 3}
@@ -1135,7 +1136,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: 0ecce96319498b148a542c1e1b68d624, type: 3}
+  m_Resource: {fileID: 8300000, guid: de5cf321a8973ab4ca085bd35e86f0c8, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.3
   m_Pitch: 1
@@ -1332,8 +1333,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DifficultyManager
   gameManager: {fileID: 404407207}
   BallForce: 10
+  CurrectScaleOfBall: 1.3
   _BombPreFab: {fileID: 7381987220378056509, guid: d6516f837c30f8647bbefc5e3b4c9b47, type: 3}
   _2XBallPrefab: {fileID: 7166754865565643594, guid: 8c4a37e53c4b07040b3eb09dfae841bd, type: 3}
+  _HeartBall: {fileID: 3818471006471745142, guid: 4fa60e9a870461a4595d3c3d1ffca90a, type: 3}
   isBombSpawned: 0
   BombDelayTime: 20
 --- !u!1 &2132910703

@@ -9,7 +9,8 @@ public class GameManager : MonoBehaviour
     public int score = 0;
     public UIManager UIManager;
     public DifficultyManager difficultyManager;
-    int Health = 5;
+    [HideInInspector]
+    public int Health = 5;
     int BonusScore = 0;
     public int ScoreMultiplyerDelay;
     [HideInInspector]
@@ -42,11 +43,25 @@ public class GameManager : MonoBehaviour
     #region Score Syytem
     public void ScoreSystem()
     {
-        score += 1 + BonusScore;
+        score++;
+        if (score <= 101)
+        {
+            score += 0 + BonusScore;
 
-        UIManager.AddScore(score);
+            UIManager.AddScore(score);
+        }
+
+        else if(score >101 &&  score < 200)
+        {
+            score += 1 + BonusScore;
+
+            UIManager.AddScore(score);
+
+        }
 
     }
+
+
 
     public void DoubleScore() 
     {
@@ -72,60 +87,68 @@ public class GameManager : MonoBehaviour
         if (Health <= 0) return;
         Health--;
         UIManager.RemoveLife(Health);
-
-
     }
-
     #endregion
 
+   
     #region Coin Reward System
 
     public void CoinReward()
     {
+        int coinCount = 1;
+
+        if (score > 101 && score < 200)
+            coinCount = 2;
+
+        StartCoroutine(SpawnCoinsOneByOne(coinCount));
+        ScoreSystem();
+    }
+
+    IEnumerator SpawnCoinsOneByOne(int count)
+    {
         Ball ball = FindAnyObjectByType<Ball>();
 
-        GameObject coin = Instantiate(CoinPreFab, ball.BallLastPos, Quaternion.identity);
+        for (int i = 0; i < count; i++)
+        {
+            GameObject coin = Instantiate(CoinPreFab, ball.BallLastPos, Quaternion.identity);
+            StartCoroutine(MoveCoin(coin));
 
-        StartCoroutine(MoveCoin(coin));
+            // delay between each coin spawn
+            yield return new WaitForSeconds(0.2f);
+        }
     }
 
     IEnumerator MoveCoin(GameObject coin)
     {
         float speed = 10f;
         float popDuration = 0.25f;
-        float maxPopScale = 4f; // overshoot scale
+        float maxPopScale = 4f;
 
-        // ----- POP-IN ANIMATION -----
         Vector3 originalScale = Vector3.zero;
         Vector3 overshootScale = Vector3.one * maxPopScale;
         Vector3 finalScale = Vector3.one;
 
         float t = 0f;
 
-        // scale from 0 -> overshoot
+        // POP IN
         while (t < popDuration / 2)
         {
             t += Time.deltaTime;
-            float factor = t / (popDuration / 2);
-            coin.transform.localScale = Vector3.Lerp(originalScale, overshootScale, factor);
+            coin.transform.localScale = Vector3.Lerp(originalScale, overshootScale, t / (popDuration / 2));
             yield return null;
         }
 
         t = 0f;
-        // scale from overshoot -> final
         while (t < popDuration / 2)
         {
             t += Time.deltaTime;
-            float factor = t / (popDuration / 2);
-            coin.transform.localScale = Vector3.Lerp(overshootScale, finalScale, factor);
+            coin.transform.localScale = Vector3.Lerp(overshootScale, finalScale, t / (popDuration / 2));
             yield return null;
         }
 
-        // ----- FLY TO COLLECTOR -----
-        Vector3 startPos = coin.transform.position;
+        // MOVE TO COLLECT
         while (Vector3.Distance(coin.transform.position, CoinCollectPos) > 0.05f)
         {
-            // ease-out movement
             coin.transform.position = Vector3.MoveTowards(
                 coin.transform.position,
                 CoinCollectPos,
@@ -134,11 +157,8 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
 
-        // Coin reached collector
-        coin.transform.position = CoinCollectPos;
         CoinCollectSFX.Play();
         Destroy(coin);
-        ScoreSystem();
     }
 
     #endregion

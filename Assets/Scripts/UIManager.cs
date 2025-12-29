@@ -30,6 +30,11 @@ public class UIManager : MonoBehaviour
         hearts[Life].style.display = DisplayStyle.None;
     }
 
+    public void AddLife(int Life)
+    {
+        hearts[Life].style.display = DisplayStyle.Flex;
+    }
+
     public void AddScore(int score)
     {
         scoreLabel.text = score.ToString();

@@ -17,6 +17,7 @@ public class Ball : MonoBehaviour
         gameManager = FindAnyObjectByType<GameManager>();
         difficultyManager = FindAnyObjectByType<DifficultyManager>();
         BallTapSFX = GameObject.Find("Ball Tap SFX").GetComponent<AudioSource>();
+        Score = gameManager.score;
 
     }
 
@@ -51,7 +52,7 @@ public class Ball : MonoBehaviour
     {
         int BallSpawnChance = Random.Range(10, 100);
 
-        Score = gameManager.score;
+        
         if (Score <= 10)
         {
 
@@ -82,6 +83,7 @@ public class Ball : MonoBehaviour
         {
             difficultyManager.LevelFour();
             difficultyManager.LevelFour();
+            difficultyManager.HeartBall();
         }
 
         if (Score > 101 && Score <= 200)
