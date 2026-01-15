@@ -18,7 +18,6 @@ public class Ball : MonoBehaviour
         difficultyManager = FindAnyObjectByType<DifficultyManager>();
         BallTapSFX = GameObject.Find("Ball Tap SFX").GetComponent<AudioSource>();
         Score = gameManager.score;
-
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -40,9 +39,8 @@ public class Ball : MonoBehaviour
     public void Destroytheball() // Destroy ball 
     {
 
-        
+
         LevelSelect();
-        TwoXBallSpawn();
         gameManager.CoinReward();
         Destroy(gameObject);
 
@@ -50,56 +48,78 @@ public class Ball : MonoBehaviour
 
     private void LevelSelect()
     {
-        int BallSpawnChance = Random.Range(10, 100);
-
-        
         if (Score <= 10)
         {
-
-            difficultyManager.LevelOne();
+            difficultyManager.LevelOne();  //spawn ball
         }
 
-        if (Score > 10 && Score <= 20)
+        else if (Score > 10 && Score <= 20)
         {
-            difficultyManager.LevelTwo();
-
+            difficultyManager.LevelTwo(); // adding swing
         }
 
-        if (Score > 20 && Score <= 100)
+        else if (Score > 20 && Score <= 100)
         {
-            if (BallSpawnChance < 50 && Score>=50 && !difficultyManager.isBombSpawned)
-            {
-                difficultyManager.BombBallSpawn();
-            }
-
-            else
-            {
-                difficultyManager.LevelThree();
-            }
-            
-
+            difficultyManager.LevelThree(); //Ball Speed incrase
         }
-        if(Score == 101)
+        else if (Score > 100 && !difficultyManager.is2BallSpawned) //spawn 2 ball
         {
             difficultyManager.LevelFour();
             difficultyManager.LevelFour();
             difficultyManager.HeartBall();
+            difficultyManager.is2BallSpawned = true;
         }
 
-        if (Score > 102 && Score <= 400)
+        else if (Score > 100 && Score <= 300 && difficultyManager.is2BallSpawned)
         {
-            if (BallSpawnChance < 35 && Score >= 50 && !difficultyManager.isBombSpawned)
-            {
-                difficultyManager.BombBallSpawn();
-            }
-
-            else
-            {
-                difficultyManager.LevelFour();
-            }
-
-
+            difficultyManager.LevelFour(); //continuing 2 ball
         }
+
+        else if (Score > 300 && !difficultyManager.is3BallSpawned) // spawn 3 ball
+        {
+            difficultyManager.LevelFive();
+            difficultyManager.LevelFive();
+            difficultyManager.HeartBall();
+            difficultyManager.HeartBall();
+            difficultyManager.is3BallSpawned = true;
+        }
+
+
+        else if (Score > 300 && Score < 450 && difficultyManager.is3BallSpawned)
+        {
+            difficultyManager.LevelFive();// continuing 3 ball
+        }
+
+        else if (Score >= 450 && Score <= 550) // Ball speed increase
+        {
+            difficultyManager.LevelSix();
+        }
+
+        else if (Score > 550 && !difficultyManager.is4BallSpawned) // 4 ball spawn
+        {
+            difficultyManager.LevelSeven();
+            difficultyManager.LevelSeven();
+            difficultyManager.LevelSeven();
+            difficultyManager.HeartBall();
+            difficultyManager.HeartBall();
+            difficultyManager.is4BallSpawned = true;
+        }
+
+        else if (Score > 550 && Score < 700 && difficultyManager.is4BallSpawned)
+        {
+            difficultyManager.LevelSeven(); // continuing 4 ball
+        }
+
+        else if (Score > 700 && Score < 1000)
+        {
+            difficultyManager.LevelEight(); // Ball speed increase
+        }
+
+
+
+
+
+
 
 
 
@@ -115,12 +135,6 @@ public class Ball : MonoBehaviour
             TwoXBallSpawnDelay += 80;
         }
     }
-
-
-
-
-
-
 
 }
 

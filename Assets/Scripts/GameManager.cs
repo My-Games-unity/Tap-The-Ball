@@ -33,35 +33,26 @@ public class GameManager : MonoBehaviour
         difficultyManager.LevelOne();
     }
 
+    #region Spawn ball
+
     public GameObject SpawnBall()
     {
         Spawnedball = Instantiate(ballPrefab, new Vector2(Random.Range(-1.3f, 1.3f), Random.Range(0f, 3f)), Quaternion.identity);
         return Spawnedball;
         
     }
+    #endregion
 
     #region Score Syytem
     public void ScoreSystem()
     {
         score++;
-        if (score <= 101)
-        {
-            score += 0 + BonusScore;
-
-            UIManager.AddScore(score);
-        }
-
-        else if(score >101 &&  score < 300)
-        {
-            score += 1 + BonusScore;
-
-            UIManager.AddScore(score);
-
-        }
+        score = score + BonusScore;
+        UIManager.AddScore(score);
 
     }
 
-
+    #region double Score powerup
 
     public void DoubleScore() 
     {
@@ -78,6 +69,8 @@ public class GameManager : MonoBehaviour
         isBonusScoreActive = false;
 
     }
+
+    #endregion
 
     #endregion
 
@@ -104,8 +97,22 @@ public class GameManager : MonoBehaviour
             coinCount = 2;
         }
 
-        if (score > 101 && score < 400)
+        if (score > 101 && score < 300)
+        {
             coinCount = 2;
+        }
+
+        else if(score>300 && score <550)
+        {
+            coinCount = 3;
+        }
+
+        else if (score > 550 && score < 1000)
+        {
+            coinCount = 4;
+        }
+
+       
 
         StartCoroutine(SpawnCoinsOneByOne(coinCount));
         

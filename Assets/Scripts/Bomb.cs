@@ -41,13 +41,13 @@ public class Bomb : MonoBehaviour
             difficultyManager.LevelOne();
         }
 
-        if (Score > 10 && Score <= 20)
+        else if (Score > 10 && Score <= 20)
         {
             difficultyManager.LevelTwo();
 
         }
 
-        if (Score > 20 && Score <= 100)
+        else if (Score > 20 && Score <= 100)
         {
 
 
@@ -56,12 +56,21 @@ public class Bomb : MonoBehaviour
 
         }
 
-        if (Score > 100 && Score <= 400)
+        else if (Score > 100 && Score <= 300 && difficultyManager.is2BallSpawned )
         {
             difficultyManager.LevelFour();
 
 
         }
+
+        else if (Score > 300 && Score <= 800 && difficultyManager.is3BallSpawned)
+        {
+            difficultyManager.LevelFive();
+
+
+        }
+
+
 
 
     }

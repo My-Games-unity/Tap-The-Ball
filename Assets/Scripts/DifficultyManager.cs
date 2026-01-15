@@ -16,6 +16,9 @@ public class DifficultyManager : MonoBehaviour
     [HideInInspector]
     public bool isBombSpawned = false;
     public int BombDelayTime;
+    public bool is2BallSpawned = false;  
+    public bool is3BallSpawned = false;
+    public bool is4BallSpawned = false;
 
 
     public void BombBallSpawn()
@@ -91,12 +94,12 @@ public class DifficultyManager : MonoBehaviour
 
     #region Levels
 
-    public void LevelOne()
+    public void LevelOne() //Spawn ball
     {
         gameManager.SpawnBall();
     }
 
-    public void LevelTwo() 
+    public void LevelTwo() // adding Swing to ball
     {
           
         SpawnedBall = gameManager.SpawnBall();
@@ -158,10 +161,10 @@ public class DifficultyManager : MonoBehaviour
 
     }
 
-    public void LevelFour()
+    public void LevelFour() //2 ball Spawn
     {
             int Score = gameManager.score;
-             if (Score > 140) 
+             if (Score > 140 && Score <300) 
              {
               BallForce += 0.4f;
               BallForce = Mathf.Clamp(BallForce, 10f, 30f);
@@ -197,6 +200,168 @@ public class DifficultyManager : MonoBehaviour
             }
 
     }
+
+    public void LevelFive() // 3 Ball spawn
+    {
+        int Score = gameManager.score;
+        if (Score > 300 && Score < 450)
+        {
+            BallForce += 0.6f;
+            BallForce = Mathf.Clamp(BallForce, 10f, 40f);
+
+        }
+
+        CurrectScaleOfBall = CurrectScaleOfBall - 0.01f;
+        CurrectScaleOfBall = Mathf.Max(CurrectScaleOfBall, 0.7f);
+        SpawnedBall = gameManager.SpawnBall();
+        SpawnedBall.transform.localScale = Vector3.one * CurrectScaleOfBall;
+        Ballrb = SpawnedBall.GetComponent<Rigidbody2D>();
+        Ballrb.mass = 3.2f;
+        Ballrb.linearDamping = 0.6f;
+        if (gameManager.isBonusScoreActive)
+        {
+            Ballrb.bodyType = RigidbodyType2D.Kinematic;
+        }
+
+        else
+        {
+
+            int randomnumber = UnityEngine.Random.Range(-2, 1);
+            //Debug.Log(randomnumber);
+            if (randomnumber <= 0)
+            {
+                Ballrb.AddForce(new Vector2(-BallForce, 0), ForceMode2D.Impulse);
+            }
+            else if (randomnumber > 0)
+            {
+                Ballrb.AddForce(new Vector2(BallForce, 0), ForceMode2D.Impulse);
+
+            }
+        }
+
+    }
+
+    public void LevelSix() // Ball Speed increase
+    {
+        int Score = gameManager.score;
+        if (Score > 450 && Score < 550)
+        {
+            BallForce += 0.6f;
+            BallForce = Mathf.Clamp(BallForce, 10f, 50f);
+
+        }
+
+        CurrectScaleOfBall = CurrectScaleOfBall - 0.01f;
+        CurrectScaleOfBall = Mathf.Max(CurrectScaleOfBall, 0.65f);
+        SpawnedBall = gameManager.SpawnBall();
+        SpawnedBall.transform.localScale = Vector3.one * CurrectScaleOfBall;
+        Ballrb = SpawnedBall.GetComponent<Rigidbody2D>();
+        Ballrb.mass = 3.2f;
+        Ballrb.linearDamping = 0.6f;
+        if (gameManager.isBonusScoreActive)
+        {
+            Ballrb.bodyType = RigidbodyType2D.Kinematic;
+        }
+
+        else
+        {
+
+            int randomnumber = UnityEngine.Random.Range(-2, 1);
+            //Debug.Log(randomnumber);
+            if (randomnumber <= 0)
+            {
+                Ballrb.AddForce(new Vector2(-BallForce, 0), ForceMode2D.Impulse);
+            }
+            else if (randomnumber > 0)
+            {
+                Ballrb.AddForce(new Vector2(BallForce, 0), ForceMode2D.Impulse);
+
+            }
+        }
+
+    }
+
+    public void LevelSeven() // 4 ball spawn
+    {
+        int Score = gameManager.score;
+        if (Score > 550 && Score < 700)
+        {
+            BallForce += 0.6f;
+            BallForce = Mathf.Clamp(BallForce, 10f, 55f);
+
+        }
+
+        CurrectScaleOfBall = CurrectScaleOfBall - 0.01f;
+        CurrectScaleOfBall = Mathf.Max(CurrectScaleOfBall, 0.6f);
+        SpawnedBall = gameManager.SpawnBall();
+        SpawnedBall.transform.localScale = Vector3.one * CurrectScaleOfBall;
+        Ballrb = SpawnedBall.GetComponent<Rigidbody2D>();
+        Ballrb.mass = 3.8f;
+        Ballrb.linearDamping = 0.8f;
+        if (gameManager.isBonusScoreActive)
+        {
+            Ballrb.bodyType = RigidbodyType2D.Kinematic;
+        }
+
+        else
+        {
+
+            int randomnumber = UnityEngine.Random.Range(-2, 1);
+            //Debug.Log(randomnumber);
+            if (randomnumber <= 0)
+            {
+                Ballrb.AddForce(new Vector2(-BallForce, 0), ForceMode2D.Impulse);
+            }
+            else if (randomnumber > 0)
+            {
+                Ballrb.AddForce(new Vector2(BallForce, 0), ForceMode2D.Impulse);
+
+            }
+        }
+
+    }
+
+    public void LevelEight() // ball Speed increase
+    {
+        int Score = gameManager.score;
+        if (Score > 700 && Score < 1000)
+        {
+            BallForce += 0.6f;
+            BallForce = Mathf.Clamp(BallForce, 10f, 60f);
+
+        }
+
+        CurrectScaleOfBall = CurrectScaleOfBall - 0.01f;
+        CurrectScaleOfBall = Mathf.Max(CurrectScaleOfBall, 0.6f);
+        SpawnedBall = gameManager.SpawnBall();
+        SpawnedBall.transform.localScale = Vector3.one * CurrectScaleOfBall;
+        Ballrb = SpawnedBall.GetComponent<Rigidbody2D>();
+        Ballrb.mass = 3.8f;
+        Ballrb.linearDamping = 0.8f;
+        if (gameManager.isBonusScoreActive)
+        {
+            Ballrb.bodyType = RigidbodyType2D.Kinematic;
+        }
+
+        else
+        {
+
+            int randomnumber = UnityEngine.Random.Range(-2, 1);
+            //Debug.Log(randomnumber);
+            if (randomnumber <= 0)
+            {
+                Ballrb.AddForce(new Vector2(-BallForce, 0), ForceMode2D.Impulse);
+            }
+            else if (randomnumber > 0)
+            {
+                Ballrb.AddForce(new Vector2(BallForce, 0), ForceMode2D.Impulse);
+
+            }
+        }
+
+    }
+
+
     #endregion
 
 
